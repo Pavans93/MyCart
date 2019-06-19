@@ -1,0 +1,61 @@
+<form #frm="ngForm" (ngSubmit)="addItem(frm)" *ngIf="!toggleForm">
+  <!-- *ngIf adds/removes some elements from dom based on condition-->
+  <!--frm is the form object to access all the values entered by the user through form,then it will call the methods in dataservice class and api call will happen and data will be stored,ngModel needs to be added because it will add a module to the form(name attribute should have values when ngModel is used-->
+  <h2> Add Item</h2>
+  <div class="form-group">
+    <label for="">
+      Name:
+    </label>
+    <input type="text" class="form-control" name="itemName" value="" ngModel required>
+  </div>
+  <div class="form-group">
+    <label for="">
+      Quantity:
+    </label>
+    <input type="number" class="form-control" name="itemQuantity" value="" ngModel required>
+  </div>
+  <button type="submit" name="button" class="btn btn-success" [disabled]="frm.invalid">Add Item</button>
+</form>
+
+<!--form to edit-->
+<form #editfrm="ngForm" (ngSubmit)="editItem(editfrm)" *ngIf="toggleForm">
+  <h2> Edit Item</h2>
+  <div class="form-group">
+    <label for="">
+      Name:
+    </label>
+    <input type="text" class="form-control" name="itemName" value="" [ngModel]="selectedItem.itemName">
+    <!--if edit button is clicked the value of that particular item will be displayed in tn the textboxes of the form-->
+  </div>
+  <div class="form-group">
+    <label for="">
+      Quantity:
+    </label>
+    <input type="number" class="form-control" name="itemQuantity" value="" [ngModel]="selectedItem.itemQuantity">
+  </div>
+  <button type="submit" name="button" class="btn btn-success">Save</button>
+</form>
+
+
+<h2>Shopping List</h2>
+<div class="row">
+  <div *ngFor="let item of cartItemList" class="">
+    <div class="col-md-1">
+      <input type="checkbox" name="" [checked]="item.itemBought" (click)="updateItemCheckbox(item)" />
+    </div>
+    <div class="col-md-3">
+      {{ item.itemName }}
+    </div>
+    <div class="col-md-2">
+      {{ item.itemQuantity }}
+    </div>
+    <div class="col-md-3">
+      <button type="button" name="button" class="btn btn-primary" (click)="showEditForm(item)" [disabled]="toggleForm">Edit</button>
+    </div>
+    <div class="col-md-3">
+      <button type="button" name="button" class="btn btn-danger" (click)="deleteItem(item._id)">Delete</button>
+      <br>
+      <br>
+    </div>
+  </div>
+</div>
